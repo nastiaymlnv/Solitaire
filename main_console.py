@@ -113,7 +113,7 @@ def inputt():
     num = []
     c1 = int(input('Enter first position: '))
     if c1 == 88:
-        if click_stock > len(cards):
+        if click_stock == len(cards):
             click_stock = 28
         else:
             steps += 1
@@ -140,7 +140,7 @@ def inputt():
             spisok.append(cards[c1])
     c2 = int(input('Enter second position: '))
     if c2 == 88:
-        if click_stock > 53:
+        if click_stock == len(cards):
             click_stock = 28
         else:
             steps += 1
