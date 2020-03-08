@@ -82,27 +82,26 @@ class Cards(Desk):
             access.append(c1)
             access.append(c2)
             Desk.input_card(Desk, num, spisok, c1, c2)
-
         row = 0
-        for i in range(len(cards)):
-            if i == 0:
-                row += 1
-            if i == 2:
-                row += 1
-            if i == 5:
-                row += 1
-            if i == 9:
-                row += 1
-            if i == 14:
-                row += 1
-            if i == 20:
-                row += 1
-            if cards[i + row] == "**" and cards[i + row + 1] == "**":
-                access.append(i)
-            else:
-                print('One of cards is not avaliable')
-                Cards.view(Cards, cards)
-                inputt()
+        for i in range(len(cards)-7):
+                if i == 0:
+                    row += 1
+                if i == 2:
+                    row += 1
+                if i == 5:
+                    row += 1
+                if i == 9:
+                    row += 1
+                if i == 14:
+                    row += 1
+                if i == 20:
+                    row += 1
+                if cards[i + row] == "**" and cards[i + row + 1] == "**":
+                    access.append(i)
+                else:
+                    print('One of cards is not avaliable')
+                    Cards.view(Cards, cards)
+                    inputt()
 
 
 def inputt():
@@ -135,9 +134,16 @@ def inputt():
             print('Error.Enter a correct number')
             inputt()
         else:
-            c2=0
-            king(c1, c2, access, num, spisok)
-            spisok.append(cards[c1])
+            if "K" in cards[c1]:
+                c2 = 0
+                Cards.all_cards_access(Cards, access, c1, c2, num, spisok)
+                cards[c1] = "**"
+                access.append(c1)
+                steps += 1
+                Cards.view(Cards, cards)
+                inputt()
+            else:
+                spisok.append(cards[c1])
     c2 = int(input('Enter second position: '))
     if c2 == 88:
         if click_stock == len(cards):
@@ -168,18 +174,18 @@ def inputt():
     return spisok
 
 
-def king(c1, c2, access, num, spisok):
-    if "K" in cards[c1]:
-        global steps
-        if c1 == 21 or c1 == 22 or c1 == 23 or c1 == 24 or \
-                c1 == 25 or c1 == 26 or c1 == 27:
-            access.append(cards[c1])
-            steps += 1
-            cards[c1] = '**'
-            Cards.view(Cards, cards)
-            inputt()
-        else:
-            Cards.all_cards_access(Cards, access, c1, c2, num, spisok)
+# def king(c1, c2, access, num, spisok):
+#     if "K" in cards[c1]:
+#         global steps
+#         if c1 == 21 or c1 == 22 or c1 == 23 or c1 == 24 or \
+#                 c1 == 25 or c1 == 26 or c1 == 27:
+#             access.append(cards[c1])
+#             steps += 1
+#             cards[c1] = '**'
+#             Cards.view(Cards, cards)
+#             inputt()
+#         else:
+#             Cards.all_cards_access(Cards, access, c1, c2, num, spisok)
 
 
 if __name__ == "__main__":
