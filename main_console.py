@@ -11,51 +11,57 @@ class Desk:
         self.access = access
         self.row = row
 
-    def input_card(self, num, spisok, c1, c2):
+    def input_card(self, num, spisok, c1, c2, access):
         for i in range(len(spisok)):
-            if "A" in spisok[i]:
-                num.append(1)
-            if "K" in spisok[i]:
-                num.append(13)
-            if "Q" in spisok[i]:
-                num.append(12)
-            if "J" in spisok[i]:
-                num.append(11)
-            if '10' in spisok[i]:
-                num.append(10)
-            if '9' in spisok[i]:
-                num.append(9)
-            if '8' in spisok[i]:
-                num.append(8)
-            if '7' in spisok[i]:
-                num.append(7)
-            if '6' in spisok[i]:
-                num.append(6)
-            if '5' in spisok[i]:
-                num.append(5)
-            if '4' in spisok[i]:
-                num.append(4)
-            if '3' in spisok[i]:
-                num.append(3)
-            if '2' in spisok[i]:
-                num.append(2)
-        Desk.summ(Desk, num, spisok, c1, c2)
+            if cards.index(spisok[i]) in access:
+                if "A" in spisok[i]:
+                    num.append(1)
+                if "K" in spisok[i]:
+                    num.append(13)
+                if "Q" in spisok[i]:
+                    num.append(12)
+                if "J" in spisok[i]:
+                    num.append(11)
+                if '10' in spisok[i]:
+                    num.append(10)
+                if '9' in spisok[i]:
+                    num.append(9)
+                if '8' in spisok[i]:
+                    num.append(8)
+                if '7' in spisok[i]:
+                    num.append(7)
+                if '6' in spisok[i]:
+                    num.append(6)
+                if '5' in spisok[i]:
+                    num.append(5)
+                if '4' in spisok[i]:
+                    num.append(4)
+                if '3' in spisok[i]:
+                    num.append(3)
+                if '2' in spisok[i]:
+                    num.append(2)
+        Desk.summ(Desk, num, spisok, c1, c2, access)
 
-    def summ(self, num, spisok, c1, c2):
+    def summ(self, num, spisok, c1, c2, access):
+        global click_stock
         if sum(num) == 13:
             global steps
             steps += 1
-            if c1 == 99:
+            if c1 >= 28:
                 cards.pop(click_stock)
                 click_stock += 1
-            else:
-                cards[c2] = '**'
-            if c2 == 99:
+                cards[c2] = '  '
+            if c2 >= 28:
                 cards.pop(click_stock)
                 click_stock += 1
-            else:
-                cards[c1] = '**'
+                cards[c1] = '  '
+            if c2 == -1:
+                cards[c1] = '  '
+            if c1 < 28 and c2 < 28:
+                cards[c1] = '  '
+                cards[c2] = '  '
             spisok.clear()
+            num.clear()
             Cards.view(Cards, cards)
             inputt()
         else:
@@ -66,6 +72,7 @@ class Desk:
 class Cards(Desk):
 
     def view(self, cards):
+        """Method for representation the card pyramid in the desk."""
         global steps
         print(f'              {cards[0]}                        SCORE: {steps}\n'
               f'            {cards[1]}  {cards[2]}\n'
@@ -77,48 +84,44 @@ class Cards(Desk):
               f'STOCK: {cards[click_stock]} (press 99 to use, 88 to continue)')
 
     def all_cards_access(self, access, c1, c2, num, spisok):
-        if c1 == click_stock or c1 == 21 or c1 == 22 or c1 == 23 or c1 == 24 or c1 == 25 or c1 == 26 or c1 == 27 and \
-                c2 == click_stock or c2 == 21 or c2 == 22 or c2 == 23 or c2 == 24 or c2 == 25 or c2 == 26 or c2 == 27:
+        """Method for checking the position of card and entering to the list with unblocked card positions."""
+        if c1 == click_stock:
             access.append(c1)
+        elif c2 == click_stock:
             access.append(c2)
-            Desk.input_card(Desk, num, spisok, c1, c2)
-        row = 0
-        for i in range(len(cards)-7):
-                if i == 0:
+        row = 1
+        for i in range(len(cards[:21])):
+                if i == 1:
                     row += 1
-                if i == 2:
+                if i == 3:
                     row += 1
-                if i == 5:
+                if i == 6:
                     row += 1
-                if i == 9:
+                if i == 10:
                     row += 1
-                if i == 14:
+                if i == 15:
                     row += 1
-                if i == 20:
+                if i == 21:
                     row += 1
-                if cards[i + row] == "**" and cards[i + row + 1] == "**":
+                if cards[i + row] == "  " and cards[i + row + 1] == "  ":
                     access.append(i)
-                else:
-                    print('One of cards is not avaliable')
-                    Cards.view(Cards, cards)
-                    inputt()
+        Desk.input_card(Desk, num, spisok, c1, c2, access)
 
 
 def inputt():
     global steps
     global click_stock
-    access = []
+    access = [21, 22, 23, 24, 25, 26, 27]
     spisok = []
     num = []
     c1 = int(input('Enter first position: '))
     if c1 == 88:
+        steps += 1
+        click_stock += 1
         if click_stock == len(cards):
-            click_stock = 28
-        else:
-            steps += 1
-            click_stock += 1
-            Cards.view(Cards, cards)
-            inputt()
+            click_stock = len(cards) - 28
+        Cards.view(Cards, cards)
+        inputt()
     elif c1 == 99:
         if 'K' in cards[click_stock]:
             steps += 1
@@ -135,19 +138,24 @@ def inputt():
             inputt()
         else:
             if "K" in cards[c1]:
-                c2 = 0
+                c2 = -1
+                spisok.append(cards[c1])
                 Cards.all_cards_access(Cards, access, c1, c2, num, spisok)
-                cards[c1] = "**"
-                access.append(c1)
-                steps += 1
-                Cards.view(Cards, cards)
-                inputt()
+                if c1 in access:
+                    cards[c1] = "  "
+                    access.append(c1)
+                    steps += 1
+                    Cards.view(Cards, cards)
+                    inputt()
+                else:
+                    Cards.view(Cards, cards)
+                    inputt()
             else:
                 spisok.append(cards[c1])
     c2 = int(input('Enter second position: '))
     if c2 == 88:
         if click_stock == len(cards):
-            click_stock = 28
+            click_stock = len(cards) - 28
         else:
             steps += 1
             click_stock += 1
@@ -170,22 +178,11 @@ def inputt():
         else:
             spisok.append(cards[c2])
     Cards.all_cards_access(Cards, access, c1, c2, num, spisok)
-    Desk.input_card(Desk, num, spisok, c1, c2)
+    Desk.input_card(Desk, num, spisok, c1, c2, access)
+    if cards[0] == '**':
+        print('WIINNER')
+        quit()
     return spisok
-
-
-# def king(c1, c2, access, num, spisok):
-#     if "K" in cards[c1]:
-#         global steps
-#         if c1 == 21 or c1 == 22 or c1 == 23 or c1 == 24 or \
-#                 c1 == 25 or c1 == 26 or c1 == 27:
-#             access.append(cards[c1])
-#             steps += 1
-#             cards[c1] = '**'
-#             Cards.view(Cards, cards)
-#             inputt()
-#         else:
-#             Cards.all_cards_access(Cards, access, c1, c2, num, spisok)
 
 
 if __name__ == "__main__":
