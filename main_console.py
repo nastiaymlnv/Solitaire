@@ -1,4 +1,5 @@
 from random import shuffle
+import sys
 
 
 class Desk:
@@ -12,6 +13,8 @@ class Desk:
         self.row = row
 
     def input_card(self, num, spisok, c1, c2, access):
+        """Method that checks cards values (spisok list) if they in list of unblocked cards (access list).
+         Then inserts into the list of sum of numbers (num list)."""
         for i in range(len(spisok)):
             if cards.index(spisok[i]) in access:
                 if "A" in spisok[i]:
@@ -43,25 +46,37 @@ class Desk:
         Desk.summ(Desk, num, spisok, c1, c2, access)
 
     def summ(self, num, spisok, c1, c2, access):
-        global click_stock
+        """Method that counts the amount of two numbers in sum list and deletes cards positions in the pyramid. """
+        global click_stock, len_stack
         if sum(num) == 13:
             global steps
             steps += 1
-            if c1 >= 28:
-                cards.pop(click_stock)
+            if c1 >= 28:    #cards in the stock
+                #cards.pop(click_stock)
+                cards[click_stock] = '##'
+                len_stack -= 1
                 click_stock += 1
-                cards[c2] = '  '
-            if c2 >= 28:
+                if click_stock == len(cards):
+                    click_stock = len(cards) - len_stack
+                cards[c2] = '##'
+            if c2 >= 28:    #cards in the stock
                 cards.pop(click_stock)
+                len_stack -= 1
                 click_stock += 1
-                cards[c1] = '  '
-            if c2 == -1:
-                cards[c1] = '  '
-            if c1 < 28 and c2 < 28:
-                cards[c1] = '  '
-                cards[c2] = '  '
+                if click_stock == len(cards):
+                    click_stock = len(cards) - len_stack
+                cards[c1] = '##'
+            if c2 == -1:    #if the variable is a king
+                cards[c1] = '##'
+            if c1 < 28 and c2 < 28:    #cards in the pyramid
+                cards[c1] = '##'
+                cards[c2] = '##'
             spisok.clear()
             num.clear()
+            if cards[0] == '**':
+                print("--- C O N G R A T ' S ---\n"
+                      "   --- Y O U  W O N ---")
+                quit()
             Cards.view(Cards, cards)
             inputt()
         else:
@@ -73,7 +88,13 @@ class Cards(Desk):
 
     def view(self, cards):
         """Method for representation the card pyramid in the desk."""
-        global steps
+        global steps, click_stock, len_stack
+        while 1:
+            if cards[click_stock] == '##':
+                click_stock += 1
+                if click_stock == len(cards):  #returns stock into the start
+                    click_stock = len(cards) - len_stack
+            break
         print(f'              {cards[0]}                        SCORE: {steps}\n'
               f'            {cards[1]}  {cards[2]}\n'
               f'          {cards[3]}  {cards[4]}  {cards[5]}\n'
@@ -81,7 +102,8 @@ class Cards(Desk):
               f'      {cards[10]}  {cards[11]}  {cards[12]}  {cards[13]}  {cards[14]}\n'
               f'    {cards[15]}  {cards[16]}  {cards[17]}  {cards[18]}  {cards[19]}  {cards[20]}\n'
               f'  {cards[21]}  {cards[22]}  {cards[23]}  {cards[24]}  {cards[25]}  {cards[26]}  {cards[27]}\n\n'
-              f'STOCK: {cards[click_stock]} (press 99 to use, 88 to continue)')
+              f'STOCK: {cards[click_stock]} (press 99 to use, 88 to continue)\n'
+              f'00 - exit')
 
     def all_cards_access(self, access, c1, c2, num, spisok):
         """Method for checking the position of card and entering to the list with unblocked card positions."""
@@ -103,23 +125,30 @@ class Cards(Desk):
                     row += 1
                 if i == 21:
                     row += 1
-                if cards[i + row] == "  " and cards[i + row + 1] == "  ":
+                if cards[i + row] == "##" and cards[i + row + 1] == "##":
                     access.append(i)
         Desk.input_card(Desk, num, spisok, c1, c2, access)
 
 
 def inputt():
-    global steps
-    global click_stock
+    """Method which respond about input."""
+    global steps, click_stock, len_stack
     access = [21, 22, 23, 24, 25, 26, 27]
     spisok = []
     num = []
-    c1 = int(input('Enter first position: '))
+    while 1:
+        try:
+            c1 = int(input('Enter first position: '))
+            break
+        except ValueError:
+            pass
+    if c1 == 00:
+        sys.exit('--- Bye:) ---')
     if c1 == 88:
         steps += 1
         click_stock += 1
         if click_stock == len(cards):
-            click_stock = len(cards) - 28
+            click_stock = len(cards) - len_stack
         Cards.view(Cards, cards)
         inputt()
     elif c1 == 99:
@@ -127,6 +156,8 @@ def inputt():
             steps += 1
             cards.pop(click_stock)
             click_stock += 1
+            if click_stock == len(cards):
+                click_stock = len(cards) - len_stack
             Cards.view(Cards, cards)
             inputt()
         else:
@@ -142,7 +173,7 @@ def inputt():
                 spisok.append(cards[c1])
                 Cards.all_cards_access(Cards, access, c1, c2, num, spisok)
                 if c1 in access:
-                    cards[c1] = "  "
+                    cards[c1] = "##"
                     access.append(c1)
                     steps += 1
                     Cards.view(Cards, cards)
@@ -152,13 +183,20 @@ def inputt():
                     inputt()
             else:
                 spisok.append(cards[c1])
-    c2 = int(input('Enter second position: '))
+    while 1:
+        try:
+            c2 = int(input('Enter second position: '))
+            break
+        except ValueError:
+            pass
     if c2 == 88:
         if click_stock == len(cards):
             click_stock = len(cards) - 28
         else:
             steps += 1
             click_stock += 1
+            if click_stock == len(cards):
+                click_stock = len(cards) - len_stack
             Cards.view(Cards, cards)
             inputt()
     elif c2 == 99:
@@ -166,6 +204,8 @@ def inputt():
             steps += 1
             cards.pop(click_stock)
             click_stock += 1
+            if click_stock == len(cards):
+                click_stock = len(cards) - len_stack
             Cards.view(Cards, cards)
             inputt()
         else:
@@ -179,14 +219,12 @@ def inputt():
             spisok.append(cards[c2])
     Cards.all_cards_access(Cards, access, c1, c2, num, spisok)
     Desk.input_card(Desk, num, spisok, c1, c2, access)
-    if cards[0] == '**':
-        print('WIINNER')
-        quit()
     return spisok
 
 
 if __name__ == "__main__":
-    click_stock = 28
+    click_stock = 28    #count of clicks on the stock
+    len_stack = 24      #length of the stock
     steps = 0
     cards = ["AH", "KH", "QH", "JH", "10H", "9H", "8H", "7H", "6H", "5H", "4H", "3H", "2H",
              "AP", "KP", "QP", "JP", "10P", "9P", "8P", "7P", "6P", "5P", "4P", "3P", "2P",
