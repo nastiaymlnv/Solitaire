@@ -31,46 +31,47 @@ class Cards:
 
 class Desk:
     def value(self, pushButton, num):
-        if "A" in pushButton.text():
-            num.append(1)
-            names.append(pushButton)
-        if "K" in pushButton.text():
-            num.append(13)
-            names.append(pushButton)
-        if "Q" in pushButton.text():
-            num.append(12)
-            names.append(pushButton)
-        if "J" in pushButton.text():
-            num.append(11)
-            names.append(pushButton)
-        if "10" in pushButton.text():
-            num.append(10)
-            names.append(pushButton)
-        if "9" in pushButton.text():
-            num.append(9)
-            names.append(pushButton)
-        if "8" in pushButton.text():
-            num.append(8)
-            names.append(pushButton)
-        if "7" in pushButton.text():
-            num.append(7)
-            names.append(pushButton)
-        if "6" in pushButton.text():
-            num.append(6)
-            names.append(pushButton)
-        if "5" in pushButton.text():
-            num.append(5)
-            names.append(pushButton)
-        if "4" in pushButton.text():
-            num.append(4)
-            names.append(pushButton)
-        if "3" in pushButton.text():
-            num.append(3)
-            names.append(pushButton)
-        if "2" in pushButton.text():
-            num.append(2)
-            names.append(pushButton)
-        Desk.summ(Desk, num, names, pushButton)
+        if pushButton.isEnabled():
+            if "A" in pushButton.text():
+                num.append(1)
+                names.append(pushButton)
+            if "K" in pushButton.text():
+                num.append(13)
+                names.append(pushButton)
+            if "Q" in pushButton.text():
+                num.append(12)
+                names.append(pushButton)
+            if "J" in pushButton.text():
+                num.append(11)
+                names.append(pushButton)
+            if "10" in pushButton.text():
+                num.append(10)
+                names.append(pushButton)
+            if "9" in pushButton.text():
+                num.append(9)
+                names.append(pushButton)
+            if "8" in pushButton.text():
+                num.append(8)
+                names.append(pushButton)
+            if "7" in pushButton.text():
+                num.append(7)
+                names.append(pushButton)
+            if "6" in pushButton.text():
+                num.append(6)
+                names.append(pushButton)
+            if "5" in pushButton.text():
+                num.append(5)
+                names.append(pushButton)
+            if "4" in pushButton.text():
+                num.append(4)
+                names.append(pushButton)
+            if "3" in pushButton.text():
+                num.append(3)
+                names.append(pushButton)
+            if "2" in pushButton.text():
+                num.append(2)
+                names.append(pushButton)
+            Desk.summ(Desk, num, names, pushButton)
 
     def summ(self, num, names, pushButton):
         if len(names) == 2 and sum(num) != 13:
@@ -81,11 +82,38 @@ class Desk:
                 names[0].hide()
                 num.clear()
                 names.clear()
+                Desk.all_cards_access(Desk, pushButton, pyramid)
             elif len(names) == 2:
                 names[0].hide()
                 names[1].hide()
                 num.clear()
                 names.clear()
+                Desk.all_cards_access(Desk, pushButton, pyramid)
+
+
+    def all_cards_access(self, pushButton, pyramid):
+        """Method for checking the position of card and entering to the list with unblocked card positions."""
+        # if c1 == click_stock:  # if the input card is in the stock, appends into the access list
+        #     access.append(c1)
+        # elif c2 == click_stock:
+        #     access.append(c2)
+        row = 1
+        for i in range(len(pyramid[:21])):
+            if not pyramid[i].isEnabled():
+                if i == 1:
+                    row += 1
+                if i == 3:
+                    row += 1
+                if i == 6:
+                    row += 1
+                if i == 10:
+                    row += 1
+                if i == 15:
+                    row += 1
+                if i == 21:
+                    row += 1
+                if pyramid[i + row].isHidden() and pyramid[i + row + 1].isHidden():
+                    pyramid[i].setEnabled(True)
 
 
     # def score(self, pushButton):
@@ -149,7 +177,7 @@ if __name__ == "__main__":
     ui = uic.loadUi("window.ui")
     ui.setWindowTitle("Pyramid Solitaire")
     base_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-    ui.setWindowIcon(QtGui.QIcon(os.path.join(base_dir, 'green_felt.jpg')))  # must be in ico format
+    ui.setWindowIcon(QtGui.QIcon(os.path.join(base_dir, 'icons.ico')))  # must be in ico format
 
     cards = ["A♥", "K♥", "Q♥", "J♥", "10♥", "9♥", "8♥", "7♥", "6♥", "5♥", "4♥", "3♥", "2♥",
              "A♠", "K♠", "Q♠", "J♠", "10♠", "9♠", "8♠", "7♠", "6♠", "5♠", "4♠", "3♠", "2♠",
@@ -162,21 +190,17 @@ if __name__ == "__main__":
                ui.pushButton_19, ui.pushButton_20, ui.pushButton_21, ui.pushButton_22, ui.pushButton_23, ui.pushButton_24,
                ui.pushButton_25, ui.pushButton_26, ui.pushButton_27, ui.pushButton_28]
     stock = cards[28:]
+    for i in range(21):
+        pyramid[i].setEnabled(False)
     num = []
     names = []
-
     for i in range(28):
         pyramid[i].setText(_translate("MainWindow", cards[i]))
-        #pyramid[i].setIcon(QtGui.QIcon(':/PNG/{}/.png'.format('icon_theme')))
         if "♥" in pyramid[i].text():
-            #pyramid[i].setIcon(_translate("MainWindow", 'D:/PNG/{}.png'.format(cards[i])))
-            #pyramid[i].setIcon(QtGui.QIcon('D:/PNG/{}.png'.format(cards[i])))
             pyramid[i].setStyleSheet("color: red")
         elif "♦" in pyramid[i].text():
-            #pyramid[i].setIcon(QtGui.QIcon('D:/PNG/{}.png'.format(cards[i])))
             pyramid[i].setStyleSheet("color: red")
         else:
-            #pyramid[i].setIcon(QtGui.QIcon('D:/PNG/{}.png'.format(cards[i])))
             pyramid[i].setStyleSheet("color: black")
     c.iter_stock()
     main()
