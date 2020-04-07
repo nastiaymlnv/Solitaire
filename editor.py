@@ -12,7 +12,7 @@ _translate = QtCore.QCoreApplication.translate
 
 
 class Desk:
-    def value(self, pushButton, num, access, cards):
+    def value(self, pushButton, num):
         if "A" in pushButton.text():
             num.append(1)
             names.append(pushButton)
@@ -52,9 +52,30 @@ class Desk:
         if "2" in pushButton.text():
             num.append(2)
             names.append(pushButton)
-        Desk.all_cards_access(Desk, num, names, pushButton, pyramid)
+        Desk.summ(Desk, num, names)
 
-    def all_cards_access(self, num, names, pushButton, pyramid):
+    def summ(self, num, names):
+        if len(names) == 2 and sum(num) != 13:
+            num.clear()
+            names.clear()
+            # Desk.all_cards_access(Desk, pushButton, pyramid)
+        elif sum(num) == 13:
+            if len(names) == 1:
+                names[0].hide()
+                num.clear()
+                names.clear()
+                # Desk.all_cards_access(Desk, pushButton, pyramid)
+            elif len(names) == 2:
+                names[0].hide()
+                names[1].hide()
+                num.clear()
+                names.clear()
+                # Desk.all_cards_access(Desk, pushButton, pyramid)
+        else:
+            num.clear()
+            names.clear()
+
+    def all_cards_access(self, pushButton, pyramid):
         """Method for checking the position of card and entering to the list with unblocked card positions."""
         # if c1 == click_stock:  # if the input card is in the stock, appends into the access list
         #     access.append(c1)
@@ -76,50 +97,117 @@ class Desk:
                 row += 1
             if pyramid[i + row].isHidden() and pyramid[i + row + 1].isHidden():
                 pushButton.setEnabled(True)
-        Desk.summ(Desk, num, names, pushButton)
-
-    def summ(self, num, names, pushButton):
-        if pushButton.isEnabled():
-            if len(names) == 2 and sum(num) != 13:
-                num.clear()
-                names.clear()
-            elif sum(num) == 13:
-                if len(names) == 1:
-                    names[0].hide()
-                    num.clear()
-                    names.clear()
-                elif len(names) == 2:
-                    names[0].hide()
-                    names[1].hide()
-                    num.clear()
-                    names.clear()
-            else:
-                num.clear()
-                names.clear()
-        else:
-            num.clear()
-            names.clear()
 
     # def score(self, pushButton):
     #     if Desk.value(Desk, pushButton) == 13:
     #         pass
 
+
 class Cards(Desk):
     def __init__(self, index=0):
         self.index = index
 
-
     def iter_stock(self):
+        stock_style()
         if self.index == len(stock):
             self.index = 0
-        ui.pushButton_30.setText(_translate("MainWindow", stock[self.index]))
-        if "♥" in ui.pushButton_30.text():
-            ui.pushButton_30.setStyleSheet("color: red")
-        elif "♦" in ui.pushButton_30.text():
-            ui.pushButton_30.setStyleSheet("color: red")
-        else:
-            ui.pushButton_30.setStyleSheet("color: black")
+        ui.pushButton_30.setIcon(QIcon(f"PNG/{stock[self.index]}.png"))
         self.index += 1
+
+
+def pyramid_style():
+    for i in range(28):
+        pyramid[i].setText(_translate("MainWindow", None))
+    ui.pushButton_1.setIcon(QIcon(f"PNG/{cards[0]}.png"))
+    ui.pushButton_2.setIcon(QIcon(f"PNG/{cards[1]}.png"))
+    ui.pushButton_3.setIcon(QIcon(f"PNG/{cards[2]}.png"))
+    ui.pushButton_4.setIcon(QIcon(f"PNG/{cards[3]}.png"))
+    ui.pushButton_5.setIcon(QIcon(f"PNG/{cards[4]}.png"))
+    ui.pushButton_6.setIcon(QIcon(f"PNG/{cards[5]}.png"))
+    ui.pushButton_7.setIcon(QIcon(f"PNG/{cards[6]}.png"))
+    ui.pushButton_8.setIcon(QIcon(f"PNG/{cards[7]}.png"))
+    ui.pushButton_9.setIcon(QIcon(f"PNG/{cards[8]}.png"))
+    ui.pushButton_10.setIcon(QIcon(f"PNG/{cards[9]}.png"))
+    ui.pushButton_11.setIcon(QIcon(f"PNG/{cards[10]}.png"))
+    ui.pushButton_12.setIcon(QIcon(f"PNG/{cards[11]}.png"))
+    ui.pushButton_13.setIcon(QIcon(f"PNG/{cards[12]}.png"))
+    ui.pushButton_14.setIcon(QIcon(f"PNG/{cards[13]}.png"))
+    ui.pushButton_15.setIcon(QIcon(f"PNG/{cards[14]}.png"))
+    ui.pushButton_16.setIcon(QIcon(f"PNG/{cards[15]}.png"))
+    ui.pushButton_17.setIcon(QIcon(f"PNG/{cards[16]}.png"))
+    ui.pushButton_18.setIcon(QIcon(f"PNG/{cards[17]}.png"))
+    ui.pushButton_19.setIcon(QIcon(f"PNG/{cards[18]}.png"))
+    ui.pushButton_20.setIcon(QIcon(f"PNG/{cards[19]}.png"))
+    ui.pushButton_21.setIcon(QIcon(f"PNG/{cards[20]}.png"))
+    ui.pushButton_22.setIcon(QIcon(f"PNG/{cards[21]}.png"))
+    ui.pushButton_23.setIcon(QIcon(f"PNG/{cards[22]}.png"))
+    ui.pushButton_24.setIcon(QIcon(f"PNG/{cards[23]}.png"))
+    ui.pushButton_25.setIcon(QIcon(f"PNG/{cards[24]}.png"))
+    ui.pushButton_26.setIcon(QIcon(f"PNG/{cards[25]}.png"))
+    ui.pushButton_27.setIcon(QIcon(f"PNG/{cards[26]}.png"))
+    ui.pushButton_28.setIcon(QIcon(f"PNG/{cards[27]}.png"))
+    ui.pushButton_28.setCheckable(True)
+
+    ui.pushButton_1.setIconSize(QSize(123, 125))
+    ui.pushButton_2.setIconSize(QSize(123, 125))
+    ui.pushButton_3.setIconSize(QSize(123, 125))
+    ui.pushButton_4.setIconSize(QSize(123, 125))
+    ui.pushButton_5.setIconSize(QSize(123, 125))
+    ui.pushButton_6.setIconSize(QSize(123, 125))
+    ui.pushButton_7.setIconSize(QSize(123, 125))
+    ui.pushButton_8.setIconSize(QSize(123, 125))
+    ui.pushButton_9.setIconSize(QSize(123, 125))
+    ui.pushButton_10.setIconSize(QSize(123, 125))
+    ui.pushButton_11.setIconSize(QSize(123, 125))
+    ui.pushButton_12.setIconSize(QSize(123, 125))
+    ui.pushButton_13.setIconSize(QSize(123, 125))
+    ui.pushButton_14.setIconSize(QSize(123, 125))
+    ui.pushButton_15.setIconSize(QSize(123, 125))
+    ui.pushButton_16.setIconSize(QSize(123, 125))
+    ui.pushButton_17.setIconSize(QSize(123, 125))
+    ui.pushButton_18.setIconSize(QSize(123, 125))
+    ui.pushButton_19.setIconSize(QSize(123, 125))
+    ui.pushButton_20.setIconSize(QSize(123, 125))
+    ui.pushButton_21.setIconSize(QSize(123, 125))
+    ui.pushButton_22.setIconSize(QSize(123, 125))
+    ui.pushButton_23.setIconSize(QSize(123, 125))
+    ui.pushButton_24.setIconSize(QSize(123, 125))
+    ui.pushButton_25.setIconSize(QSize(123, 125))
+    ui.pushButton_26.setIconSize(QSize(123, 125))
+    ui.pushButton_27.setIconSize(QSize(123, 125))
+    ui.pushButton_28.setIconSize(QSize(123, 110))
+
+
+def stock_style():
+    ui.pushButton_29.setText(_translate("MainWindow", None))
+    ui.pushButton_30.setText(_translate("MainWindow", None))
+    ui.pushButton_29.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_29.setIconSize(QSize(123, 125))
+    ui.pushButton_30.setIconSize(QSize(123, 125))
+
+
+def noenabled():
+    ui.pushButton_1.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_2.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_3.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_4.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_5.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_6.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_7.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_8.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_9.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_10.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_11.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_12.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_13.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_14.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_15.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_16.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_17.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_18.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_19.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_20.setIcon(QIcon("PNG/red_back.png"))
+    ui.pushButton_21.setIcon(QIcon("PNG/red_back.png"))
 
 
 def main():
@@ -155,69 +243,12 @@ def main():
     ui.pushButton_30.clicked.connect(partial(Desk.value, Desk, ui.pushButton_30, num))
 
 
-def style():
-    ui.pushButton_1.setIcon(QIcon(f"PNG/{cards[0]}.png"))
-    ui.pushButton_2.setIcon(QIcon(f"PNG/{cards[1]}.png"))
-    ui.pushButton_3.setIcon(QIcon(f"PNG/{cards[2]}.png"))
-    ui.pushButton_4.setIcon(QIcon(f"PNG/{cards[3]}.png"))
-    ui.pushButton_5.setIcon(QIcon(f"PNG/{cards[4]}.png"))
-    ui.pushButton_6.setIcon(QIcon(f"PNG/{cards[5]}.png"))
-    ui.pushButton_7.setIcon(QIcon(f"PNG/{cards[6]}.png"))
-    ui.pushButton_8.setIcon(QIcon(f"PNG/{cards[7]}.png"))
-    ui.pushButton_9.setIcon(QIcon(f"PNG/{cards[8]}.png"))
-    ui.pushButton_10.setIcon(QIcon(f"PNG/{cards[9]}.png"))
-    ui.pushButton_11.setIcon(QIcon(f"PNG/{cards[10]}.png"))
-    ui.pushButton_12.setIcon(QIcon(f"PNG/{cards[11]}.png"))
-    ui.pushButton_13.setIcon(QIcon(f"PNG/{cards[12]}.png"))
-    ui.pushButton_14.setIcon(QIcon(f"PNG/{cards[13]}.png"))
-    ui.pushButton_15.setIcon(QIcon(f"PNG/{cards[14]}.png"))
-    ui.pushButton_16.setIcon(QIcon(f"PNG/{cards[15]}.png"))
-    ui.pushButton_17.setIcon(QIcon(f"PNG/{cards[16]}.png"))
-    ui.pushButton_18.setIcon(QIcon(f"PNG/{cards[17]}.png"))
-    ui.pushButton_19.setIcon(QIcon(f"PNG/{cards[18]}.png"))
-    ui.pushButton_20.setIcon(QIcon(f"PNG/{cards[19]}.png"))
-    ui.pushButton_21.setIcon(QIcon(f"PNG/{cards[20]}.png"))
-    ui.pushButton_22.setIcon(QIcon(f"PNG/{cards[21]}.png"))
-    ui.pushButton_23.setIcon(QIcon(f"PNG/{cards[22]}.png"))
-    ui.pushButton_24.setIcon(QIcon(f"PNG/{cards[23]}.png"))
-    ui.pushButton_25.setIcon(QIcon(f"PNG/{cards[24]}.png"))
-    ui.pushButton_26.setIcon(QIcon(f"PNG/{cards[25]}.png"))
-    ui.pushButton_27.setIcon(QIcon(f"PNG/{cards[26]}.png"))
-    ui.pushButton_28.setIcon(QIcon(f"PNG/{cards[27]}.png"))
-
-    ui.pushButton_1.setIconSize(QSize(100, 100))
-    ui.pushButton_2.setIconSize(QSize(100, 100))
-    ui.pushButton_3.setIconSize(QSize(100, 100))
-    ui.pushButton_4.setIconSize(QSize(100, 100))
-    ui.pushButton_5.setIconSize(QSize(100, 100))
-    ui.pushButton_6.setIconSize(QSize(100, 100))
-    ui.pushButton_7.setIconSize(QSize(100, 100))
-    ui.pushButton_8.setIconSize(QSize(100, 100))
-    ui.pushButton_9.setIconSize(QSize(100, 100))
-    ui.pushButton_10.setIconSize(QSize(100, 100))
-    ui.pushButton_11.setIconSize(QSize(100, 100))
-    ui.pushButton_12.setIconSize(QSize(100, 100))
-    ui.pushButton_13.setIconSize(QSize(100, 100))
-    ui.pushButton_14.setIconSize(QSize(100, 100))
-    ui.pushButton_15.setIconSize(QSize(100, 100))
-    ui.pushButton_16.setIconSize(QSize(100, 100))
-    ui.pushButton_17.setIconSize(QSize(100, 100))
-    ui.pushButton_18.setIconSize(QSize(100, 100))
-    ui.pushButton_19.setIconSize(QSize(100, 100))
-    ui.pushButton_20.setIconSize(QSize(100, 100))
-    ui.pushButton_21.setIconSize(QSize(100, 100))
-    ui.pushButton_22.setIconSize(QSize(100, 100))
-    ui.pushButton_23.setIconSize(QSize(100, 100))
-    ui.pushButton_24.setIconSize(QSize(100, 100))
-    ui.pushButton_25.setIconSize(QSize(100, 100))
-    ui.pushButton_26.setIconSize(QSize(100, 100))
-    ui.pushButton_27.setIconSize(QSize(100, 100))
-    ui.pushButton_28.setIconSize(QSize(100, 100))
-
 if __name__ == "__main__":
     c = Cards()
     app = QtWidgets.QApplication([])
-    # app.setStyle("Fusion")
+    ui = uic.loadUi("window.ui")
+    ui.setWindowTitle("Pyramid Solitaire")
+    app.setStyle("Fusion")
     # palette = QPalette()
     # palette.setColor(QPalette.Window, QColor(53, 53, 53))
     # palette.setColor(QPalette.WindowText, Qt.white)
@@ -234,8 +265,8 @@ if __name__ == "__main__":
     # palette.setColor(QPalette.HighlightedText, Qt.black)
     # app.setPalette(palette)
     # ui = uic.loadUi(app.theme["ui_path"] + "window.ui")
-    ui = uic.loadUi("window.ui")
-    ui.setWindowTitle("Pyramid Solitaire")
+
+    ui.setStyleSheet("background: grey")
     # app.setWindowIcon(QIcon(QPixmap("green_felt.jpg")))
     # base_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
     # ui.setWindowIcon(QtGui.QIcon(os.path.join(base_dir, 'D:/PNG/playing-cards-icon.png')))
@@ -251,28 +282,22 @@ if __name__ == "__main__":
     shuffle(cards)
     pyramid = [ui.pushButton_1, ui.pushButton_2, ui.pushButton_3, ui.pushButton_4, ui.pushButton_5, ui.pushButton_6,
                ui.pushButton_7, ui.pushButton_8, ui.pushButton_9, ui.pushButton_10, ui.pushButton_11, ui.pushButton_12,
-               ui.pushButton_13, ui.pushButton_14, ui.pushButton_15, ui.pushButton_16, ui.pushButton_17, ui.pushButton_18,
-               ui.pushButton_19, ui.pushButton_20, ui.pushButton_21, ui.pushButton_22, ui.pushButton_23, ui.pushButton_24,
+               ui.pushButton_13, ui.pushButton_14, ui.pushButton_15, ui.pushButton_16, ui.pushButton_17,
+               ui.pushButton_18,
+               ui.pushButton_19, ui.pushButton_20, ui.pushButton_21, ui.pushButton_22, ui.pushButton_23,
+               ui.pushButton_24,
                ui.pushButton_25, ui.pushButton_26, ui.pushButton_27, ui.pushButton_28]
-    for i in range(28):
-        pyramid[i].setText(_translate("MainWindow", None))
-    style()
-    ui.setStyleSheet("background:green")
+    pyramid_style()
     stock = cards[28:]
     num = []
     names = []
     # for i in range(28):
     #     pyramid[i].setText(_translate("MainWindow", cards[i]))
-    #     #pyramid[i].setIcon(QtGui.QIcon(':/PNG/{}/.png'.format('icon_theme')))
     #     if "♥" in pyramid[i].text():
-    #         #pyramid[i].setIcon(_translate("MainWindow", 'D:/PNG/{}.png'.format(cards[i])))
-    #         #pyramid[i].setIcon(QtGui.QIcon('D:/PNG/{}.png'.format(cards[i])))
     #         pyramid[i].setStyleSheet("color: red")
     #     elif "♦" in pyramid[i].text():
-    #         #pyramid[i].setIcon(QtGui.QIcon('D:/PNG/{}.png'.format(cards[i])))
     #         pyramid[i].setStyleSheet("color: red")
     #     else:
-    #         #pyramid[i].setIcon(QtGui.QIcon('D:/PNG/{}.png'.format(cards[i])))
     #         pyramid[i].setStyleSheet("color: black")
     c.iter_stock()
     main()
