@@ -11,8 +11,26 @@ import PNG
 _translate = QtCore.QCoreApplication.translate
 
 
+class Cards:
+    def __init__(self, index=0):
+        self.index = index
+
+
+    def iter_stock(self):
+        if self.index == len(stock):
+            self.index = 0
+        ui.pushButton_30.setText(_translate("MainWindow", stock[self.index]))
+        if "♥" in ui.pushButton_30.text():
+            ui.pushButton_30.setStyleSheet("color: red")
+        elif "♦" in ui.pushButton_30.text():
+            ui.pushButton_30.setStyleSheet("color: red")
+        else:
+            ui.pushButton_30.setStyleSheet("color: black")
+        self.index += 1
+
+
 class Desk:
-    def value(self, pushButton, num, access, cards):
+    def value(self, pushButton, num):
         if "A" in pushButton.text():
             num.append(1)
             names.append(pushButton)
@@ -52,71 +70,27 @@ class Desk:
         if "2" in pushButton.text():
             num.append(2)
             names.append(pushButton)
-        Desk.all_cards_access(Desk, num, names, pushButton, access, cards)
-
-    def all_cards_access(self, num, names, pushButton, access, cards):
-        """Method for checking the position of card and entering to the list with unblocked card positions."""
-        # if c1 == click_stock:  # if the input card is in the stock, appends into the access list
-        #     access.append(c1)
-        # elif c2 == click_stock:
-        #     access.append(c2)
-        row = 1
-        for i in range(len(cards[:28])):  # checks the position of our element in the pyramid if it is not blocked
-            if i == 1:
-                row += 1
-            if i == 3:
-                row += 1
-            if i == 6:
-                row += 1
-            if i == 10:
-                row += 1
-            if i == 15:
-                row += 1
-            if i == 21:
-                row += 1
-            if cards[i + row] == pushButton.isHidden() and cards[i + row + 1] == pushButton.isHidden():
-                access.append(pushButton)
         Desk.summ(Desk, num, names, pushButton)
 
     def summ(self, num, names, pushButton):
-        if pushButton in access:
-            if len(names) == 2 and sum(num) != 13:
-                num.clear()
-                names.clear()
-            elif sum(num) == 13:
-                if len(names) == 1:
-                    names[0].hide()
-                    num.clear()
-                    names.clear()
-                elif len(names) == 2:
-                    names[0].hide()
-                    names[1].hide()
-                    num.clear()
-                    names.clear()
-        else:
+        if len(names) == 2 and sum(num) != 13:
             num.clear()
             names.clear()
+        elif sum(num) == 13:
+            if len(names) == 1:
+                names[0].hide()
+                num.clear()
+                names.clear()
+            elif len(names) == 2:
+                names[0].hide()
+                names[1].hide()
+                num.clear()
+                names.clear()
+
 
     # def score(self, pushButton):
     #     if Desk.value(Desk, pushButton) == 13:
     #         pass
-
-class Cards(Desk):
-    def __init__(self, index=0):
-        self.index = index
-
-
-    def iter_stock(self):
-        if self.index == len(stock):
-            self.index = 0
-        ui.pushButton_30.setText(_translate("MainWindow", stock[self.index]))
-        if "♥" in ui.pushButton_30.text():
-            ui.pushButton_30.setStyleSheet("color: red")
-        elif "♦" in ui.pushButton_30.text():
-            ui.pushButton_30.setStyleSheet("color: red")
-        else:
-            ui.pushButton_30.setStyleSheet("color: black")
-        self.index += 1
 
 
 def main():
@@ -190,8 +164,6 @@ if __name__ == "__main__":
     stock = cards[28:]
     num = []
     names = []
-    access = [ui.pushButton_22, ui.pushButton_23, ui.pushButton_24,
-              ui.pushButton_25, ui.pushButton_26, ui.pushButton_27, ui.pushButton_28]
 
     for i in range(28):
         pyramid[i].setText(_translate("MainWindow", cards[i]))
