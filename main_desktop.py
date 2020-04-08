@@ -11,24 +11,6 @@ import PNG
 _translate = QtCore.QCoreApplication.translate
 
 
-class Cards:
-    def __init__(self, index=0):
-        self.index = index
-
-
-    def iter_stock(self):
-        if self.index == len(stock):
-            self.index = 0
-        ui.pushButton_30.setText(_translate("MainWindow", stock[self.index]))
-        if "♥" in ui.pushButton_30.text():
-            ui.pushButton_30.setStyleSheet("color: red")
-        elif "♦" in ui.pushButton_30.text():
-            ui.pushButton_30.setStyleSheet("color: red")
-        else:
-            ui.pushButton_30.setStyleSheet("color: black")
-        self.index += 1
-
-
 class Desk:
     def value(self, pushButton, num):
         if pushButton.isEnabled():
@@ -74,6 +56,7 @@ class Desk:
             Desk.summ(Desk, num, names, pushButton)
 
     def summ(self, num, names, pushButton):
+        # Cards.click_stock(Cards, pushButton, names, stock)
         if len(names) == 2 and sum(num) != 13:
             num.clear()
             names.clear()
@@ -114,11 +97,55 @@ class Desk:
                     row += 1
                 if pyramid[i + row].isHidden() and pyramid[i + row + 1].isHidden():
                     pyramid[i].setEnabled(True)
+                    pyramid[i].setIcon(QIcon(None))
+                    pyramid[i].setText(_translate("MainWindow", cards[i]))
+
 
 
     # def score(self, pushButton):
     #     if Desk.value(Desk, pushButton) == 13:
     #         pass
+
+class Cards(Desk):
+    def __init__(self, index=0):
+        self.index = index
+
+    def iter_stock(self):
+        if self.index == len(stock):
+            self.index = 0
+        stock_style()
+        ui.pushButton_30.setText(_translate("MainWindow", stock[self.index]))
+        if "♥" in ui.pushButton_30.text():
+            ui.pushButton_30.setStyleSheet("color: red")
+        elif "♦" in ui.pushButton_30.text():
+            ui.pushButton_30.setStyleSheet("color: red")
+        else:
+            ui.pushButton_30.setStyleSheet("color: black")
+        self.index += 1
+
+    # def click_stock(self, pushButton, names, stock):
+    #     if pushButton.text() in stock:
+    #         self.index += 1
+    #         ui.pushButton_30.setText(_translate("MainWindow", stock[self.index]))
+    #         # stock -= names.index[pushButton]
+
+
+def not_enabled_pyramid():
+    for i in range(21):
+        pyramid[i].setText(_translate("MainWindow", None))
+        pyramid[i].setEnabled(False)
+        if not pyramid[i].isEnabled():
+            pyramid[i].setIconSize(QSize(123, 125))
+            pyramid[i].setIcon(QIcon("PNG/red_back.png"))
+            # pyramid[i].setStyleSheet("QPushButton {background-color: red }")
+
+
+def stock_style():
+    ui.pushButton_29.setText(_translate("MainWindow", None))
+    ui.pushButton_29.setIcon(QIcon("PNG/red_back.png"))
+    # ui.pushButton_30.setText(_translate("MainWindow", None))
+    ui.pushButton_29.setIconSize(QSize(125, 125))
+    ui.pushButton_30.setIconSize(QSize(125, 125))
 
 
 def main():
@@ -190,8 +217,7 @@ if __name__ == "__main__":
                ui.pushButton_19, ui.pushButton_20, ui.pushButton_21, ui.pushButton_22, ui.pushButton_23, ui.pushButton_24,
                ui.pushButton_25, ui.pushButton_26, ui.pushButton_27, ui.pushButton_28]
     stock = cards[28:]
-    for i in range(21):
-        pyramid[i].setEnabled(False)
+
     num = []
     names = []
     for i in range(28):
@@ -202,6 +228,8 @@ if __name__ == "__main__":
             pyramid[i].setStyleSheet("color: red")
         else:
             pyramid[i].setStyleSheet("color: black")
+
+    not_enabled_pyramid()
     c.iter_stock()
     main()
 
