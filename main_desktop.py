@@ -6,10 +6,9 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from random import shuffle
 from functools import partial
-import PNG
+
 
 _translate = QtCore.QCoreApplication.translate
-
 
 class Desk:
     def value(self, pushButton, num):
@@ -53,33 +52,49 @@ class Desk:
             if "2" in pushButton.text():
                 num.append(2)
                 names.append(pushButton)
-            Desk.summ(Desk, num, names, pushButton)
+            Desk.summ(Desk, num, names, pushButton, stock)
 
-    def summ(self, num, names, pushButton):
-        # Cards.click_stock(Cards, pushButton, names, stock)
+    def summ(self, num, names, pushButton, stock):
+
         if len(names) == 2 and sum(num) != 13:
             num.clear()
             names.clear()
         elif sum(num) == 13:
             if len(names) == 1:
-                names[0].hide()
-                num.clear()
-                names.clear()
-                Desk.all_cards_access(Desk, pushButton, pyramid)
+                if names[0] == ui.pushButton_30:
+                    temp = stock.index(names[0].text())
+                    del stock[stock.index(names[0].text())]
+                    ui.pushButton_30.setText(stock[temp])
+                else:
+                    names[0].hide()
+                    num.clear()
+                    names.clear()
+                    Desk.all_cards_access(Desk, pyramid)
             elif len(names) == 2:
-                names[0].hide()
-                names[1].hide()
-                num.clear()
-                names.clear()
-                Desk.all_cards_access(Desk, pushButton, pyramid)
+                if names[0] == ui.pushButton_30:
+                    temp1 = stock.index(names[0].text())
+                    del stock[stock.index(names[0].text())]
+                    ui.pushButton_30.setText(stock[temp1])
+                    names[1].hide()
+                    num.clear()
+                    names.clear()
+                    Desk.all_cards_access(Desk, pyramid)
+                elif names[1] == ui.pushButton_30:
+                    temp2 = stock.index(names[1].text())
+                    del stock[stock.index(names[1].text())]
+                    ui.pushButton_30.setText(stock[temp2])
+                    names[0].hide()
+                    num.clear()
+                    names.clear()
+                    Desk.all_cards_access(Desk, pyramid)
+                else:
+                    names[0].hide()
+                    names[1].hide()
+                    num.clear()
+                    names.clear()
+                    Desk.all_cards_access(Desk, pyramid)
 
-
-    def all_cards_access(self, pushButton, pyramid):
-        """Method for checking the position of card and entering to the list with unblocked card positions."""
-        # if c1 == click_stock:  # if the input card is in the stock, appends into the access list
-        #     access.append(c1)
-        # elif c2 == click_stock:
-        #     access.append(c2)
+    def all_cards_access(self, pyramid):
         row = 1
         for i in range(len(pyramid[:21])):
             if not pyramid[i].isEnabled():
@@ -100,11 +115,10 @@ class Desk:
                     pyramid[i].setIcon(QIcon(None))
                     pyramid[i].setText(_translate("MainWindow", cards[i]))
 
-
-
     # def score(self, pushButton):
     #     if Desk.value(Desk, pushButton) == 13:
     #         pass
+
 
 class Cards(Desk):
     def __init__(self, index=0):
@@ -115,29 +129,19 @@ class Cards(Desk):
             self.index = 0
         stock_style()
         ui.pushButton_30.setText(_translate("MainWindow", stock[self.index]))
-        if "♥" in ui.pushButton_30.text():
-            ui.pushButton_30.setStyleSheet("color: red")
-        elif "♦" in ui.pushButton_30.text():
-            ui.pushButton_30.setStyleSheet("color: red")
-        else:
-            ui.pushButton_30.setStyleSheet("color: black")
         self.index += 1
 
-    # def click_stock(self, pushButton, names, stock):
-    #     if pushButton.text() in stock:
-    #         self.index += 1
-    #         ui.pushButton_30.setText(_translate("MainWindow", stock[self.index]))
-    #         # stock -= names.index[pushButton]
-
-
 def not_enabled_pyramid():
+    # icon = QIcon()
+    # icon.addPixmap(QPixmap("red_back.png"), QIcon.Active, QIcon.Off)
     for i in range(21):
         pyramid[i].setText(_translate("MainWindow", None))
         pyramid[i].setEnabled(False)
-        if not pyramid[i].isEnabled():
-            pyramid[i].setIconSize(QSize(123, 125))
-            pyramid[i].setIcon(QIcon("PNG/red_back.png"))
-            # pyramid[i].setStyleSheet("QPushButton {background-color: red }")
+        pyramid[i].setIconSize(QSize(125, 125))
+        pyramid[i].setIcon(QIcon("PNG/red_back.png"))
+        # pyramid[i].setIcon(icon)
+
+        # icon.addPixmap(QPixmap(graphics_dir+name+".png"), QIcon.Normal, QIcon.Off)
 
 
 def stock_style():
@@ -204,12 +208,12 @@ if __name__ == "__main__":
     ui = uic.loadUi("window.ui")
     ui.setWindowTitle("Pyramid Solitaire")
     base_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-    ui.setWindowIcon(QtGui.QIcon(os.path.join(base_dir, 'icons.ico')))  # must be in ico format
-
-    cards = ["A♥", "K♥", "Q♥", "J♥", "10♥", "9♥", "8♥", "7♥", "6♥", "5♥", "4♥", "3♥", "2♥",
-             "A♠", "K♠", "Q♠", "J♠", "10♠", "9♠", "8♠", "7♠", "6♠", "5♠", "4♠", "3♠", "2♠",
-             "A♣", "K♣", "Q♣", "J♣", "10♣", "9♣", "8♣", "7♣", "6♣", "5♣", "4♣", "3♣", "2♣",
-             "A♦", "K♦", "Q♦", "J♦", "10♦", "9♦", "8♦", "7♦", "6♦", "5♦", "4♦", "3♦", "2♦"]
+    ui.setWindowIcon(QtGui.QIcon(os.path.join(base_dir, 'PNG/green_felt.jpg')))  # must be in ico format
+    n = QtCore.QPoint(120, 40)
+    cards = ["AH", "KH", "QH", "JH", "10H", "9H", "8H", "7H", "6H", "5H", "4H", "3H", "2H",
+             "AD", "KD", "QD", "JD", "10D", "9D", "8D", "7D", "6D", "5D", "4D", "3D", "2D",
+             "AC", "KC", "QC", "JC", "10C", "9C", "8C", "7C", "6C", "5C", "4C", "3C", "2C",
+             "AS", "KS", "QS", "JS", "10S", "9S", "8S", "7S", "6S", "5S", "4S", "3S", "2S"]
     shuffle(cards)
     pyramid = [ui.pushButton_1, ui.pushButton_2, ui.pushButton_3, ui.pushButton_4, ui.pushButton_5, ui.pushButton_6,
                ui.pushButton_7, ui.pushButton_8, ui.pushButton_9, ui.pushButton_10, ui.pushButton_11, ui.pushButton_12,
@@ -217,21 +221,12 @@ if __name__ == "__main__":
                ui.pushButton_19, ui.pushButton_20, ui.pushButton_21, ui.pushButton_22, ui.pushButton_23, ui.pushButton_24,
                ui.pushButton_25, ui.pushButton_26, ui.pushButton_27, ui.pushButton_28]
     stock = cards[28:]
-
     num = []
     names = []
     for i in range(28):
         pyramid[i].setText(_translate("MainWindow", cards[i]))
-        if "♥" in pyramid[i].text():
-            pyramid[i].setStyleSheet("color: red")
-        elif "♦" in pyramid[i].text():
-            pyramid[i].setStyleSheet("color: red")
-        else:
-            pyramid[i].setStyleSheet("color: black")
-
     not_enabled_pyramid()
     c.iter_stock()
     main()
-
     ui.show()
     sys.exit(app.exec_())
