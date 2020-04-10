@@ -12,49 +12,49 @@ _translate = QtCore.QCoreApplication.translate
 
 class Cards:
 
-    # def __init__(self, index=0):
+    # def __init__(self):
     #     super(Desk, self).__init__()
     #     self.index = index
 
     def value(self, pushButton, num):
         if pushButton.isEnabled():
-            if "A" in pushButton.text():
+            if "A" in pushButton.value:
                 num.append(1)
                 names.append(pushButton)
-            if "K" in pushButton.text():
+            if "K" in pushButton.value:
                 num.append(13)
                 names.append(pushButton)
-            if "Q" in pushButton.text():
+            if "Q" in pushButton.value:
                 num.append(12)
                 names.append(pushButton)
-            if "J" in pushButton.text():
+            if "J" in pushButton.value:
                 num.append(11)
                 names.append(pushButton)
-            if "10" in pushButton.text():
+            if "10" in pushButton.value:
                 num.append(10)
                 names.append(pushButton)
-            if "9" in pushButton.text():
+            if "9" in pushButton.value:
                 num.append(9)
                 names.append(pushButton)
-            if "8" in pushButton.text():
+            if "8" in pushButton.value:
                 num.append(8)
                 names.append(pushButton)
-            if "7" in pushButton.text():
+            if "7" in pushButton.value:
                 num.append(7)
                 names.append(pushButton)
-            if "6" in pushButton.text():
+            if "6" in pushButton.value:
                 num.append(6)
                 names.append(pushButton)
-            if "5" in pushButton.text():
+            if "5" in pushButton.value:
                 num.append(5)
                 names.append(pushButton)
-            if "4" in pushButton.text():
+            if "4" in pushButton.value:
                 num.append(4)
                 names.append(pushButton)
-            if "3" in pushButton.text():
+            if "3" in pushButton.value:
                 num.append(3)
                 names.append(pushButton)
-            if "2" in pushButton.text():
+            if "2" in pushButton.value:
                 num.append(2)
                 names.append(pushButton)
             Desk.summ(Desk, num, names, stock)
@@ -68,7 +68,7 @@ class Cards:
                 if names[0] == ui.pushButton_30:
                     temp = stock.index(names[0].text())
                     del stock[stock.index(names[0].text())]
-                    ui.pushButton_30.setText(stock[temp])
+                    ui.pushButton_30.value(stock[temp])
                     ui.pushButton_30.setIcon(QIcon(QPixmap(f"PNG/{stock[temp]}.png")))
                     num.clear()
                     names.clear()
@@ -86,7 +86,7 @@ class Cards:
                 if names[0] == ui.pushButton_30:
                     temp1 = stock.index(names[0].text())
                     del stock[stock.index(names[0].text())]
-                    ui.pushButton_30.setText(stock[temp1])
+                    ui.pushButton_30.value(stock[temp1])
                     ui.pushButton_30.setIcon(QIcon(QPixmap(f"PNG/{stock[temp1]}.png")))
                     names[1].hide()
                     num.clear()
@@ -96,7 +96,7 @@ class Cards:
                 elif names[1] == ui.pushButton_30:
                     temp2 = stock.index(names[1].text())
                     del stock[stock.index(names[1].text())]
-                    ui.pushButton_30.setText(stock[temp2])
+                    ui.pushButton_30.value(stock[temp2])
                     ui.pushButton_30.setIcon(QIcon(QPixmap(f"PNG/{stock[temp2]}.png")))
                     names[0].hide()
                     num.clear()
@@ -128,14 +128,12 @@ class Cards:
                 row += 1
             if pyramid[i + row].isHidden() and pyramid[i + row + 1].isHidden():
                 pyramid[i].setEnabled(True)
-                pyramid[i].setIcon(QIcon(None))
-                pyramid[i].setText(_translate("MainWindow", cards[i]))
+                pyramid[i].setIcon(QIcon(QPixmap(f"PNG/{cards[i]}.png")))
+
 
 
 class Desk(Cards):
 
-    # def __init__(self):
-    #     super().__init__()
     def __init__(self, index=0):
         self.index = index
 
@@ -145,6 +143,7 @@ class Desk(Cards):
             self.index = 0
         ui.pushButton_30.setText(_translate("MainWindow", stock[self.index]))
         ui.pushButton_30.setIcon(QIcon(QPixmap(f"PNG/{stock[self.index]}.png")))
+        # ui.pushButton_30.value(stock[self.index])
         self.index += 1
         score()
 
@@ -152,6 +151,7 @@ class Desk(Cards):
         ui.pushButton_29.setText(_translate("MainWindow", None))
         ui.pushButton_29.setIcon(QIcon(QPixmap("PNG/red_back.png")))
         ui.pushButton_30.setText(_translate("MainWindow", None))
+        ui.pushButton_30.setIcon(QIcon(QPixmap(f"PNG/{stock[0]}.png")))
         ui.pushButton_29.setIconSize(QSize(125, 125))
         ui.pushButton_30.setIconSize(QSize(125, 125))
 
@@ -170,7 +170,7 @@ def score():
 
 def window_style():
     ui.setWindowTitle("Pyramid Solitaire")
-    img = QImage("PNG/background.png")
+    img = QImage("PNG/green-felt.png")
     palette = QPalette()
     scaled = img.scaled(ui.size(), Qt.KeepAspectRatioByExpanding)
     palette.setBrush(QPalette.Window, QBrush(scaled))
@@ -179,10 +179,19 @@ def window_style():
 
 
 def new_game():
+    shuffle(cards)
+    stock = cards[28:]
+    num = []
+    names = []
+    for i in range(28):
+        pyramid[i].setText(_translate("MainWindow", None))
+        pyramid[i].setIcon(QIcon(QPixmap(f"PNG/{cards[i]}.png")))
+        pyramid[i].setIconSize(QSize(125, 125))
+        pyramid[i].value = cards[i]
+        pyramid[i].show()
+    d.not_enabled_pyramid()
+    d.iter_stock()
     ui.lcdNumber.display(0)
-    ui.lcdNumber.update()
-    ui.lcdNumber.show()
-
 
 def main():
     ui.pushButton_29.clicked.connect(d.iter_stock)
@@ -251,7 +260,10 @@ if __name__ == "__main__":
     num = []
     names = []
     for i in range(28):
-        pyramid[i].setText(_translate("MainWindow", cards[i]))
+        pyramid[i].setText(_translate("MainWindow", None))
+        pyramid[i].setIcon(QIcon(QPixmap(f"PNG/{cards[i]}.png")))
+        pyramid[i].setIconSize(QSize(125, 125))
+        pyramid[i].value = cards[i]
     d.not_enabled_pyramid()
     d.iter_stock()
     ui.lcdNumber.display(0)
