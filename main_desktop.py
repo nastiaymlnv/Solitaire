@@ -65,6 +65,7 @@ class Cards:
                     temp = stock.index(names[0].text())
                     del stock[stock.index(names[0].text())]
                     ui.pushButton_30.setText(_translate("MainWindow", stock[temp]))
+                    ui.pushButton_30.value = stock[temp]
                     ui.pushButton_30.setIcon(QIcon(QPixmap(f"PNG/{stock[temp]}.png")))
                     num.clear()
                     names.clear()
@@ -83,6 +84,7 @@ class Cards:
                     temp1 = stock.index(names[0].text())
                     del stock[stock.index(names[0].text())]
                     ui.pushButton_30.setText(_translate("MainWindow", stock[temp1]))
+                    ui.pushButton_30.value = stock[temp1]
                     ui.pushButton_30.setIcon(QIcon(QPixmap(f"PNG/{stock[temp1]}.png")))
                     names[1].hide()
                     num.clear()
@@ -93,6 +95,7 @@ class Cards:
                     temp2 = stock.index(names[1].text())
                     del stock[stock.index(names[1].text())]
                     ui.pushButton_30.setText(_translate("MainWindow", stock[temp2]))
+                    ui.pushButton_30.value = stock[temp2]
                     ui.pushButton_30.setIcon(QIcon(QPixmap(f"PNG/{stock[temp2]}.png")))
                     names[0].hide()
                     num.clear()
