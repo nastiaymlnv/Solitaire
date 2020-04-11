@@ -142,7 +142,7 @@ class Desk(Cards):
         ui.pushButton_30.value = stock[self.index]
         ui.pushButton_30.setText(_translate("MainWindow", stock[self.index]))
         ui.pushButton_30.setStyleSheet("QPushButton{border-radius:10px;"
-                                       "font: 10px;"
+                                       "font: 1px;"
                                        "padding: 10px}")
         ui.pushButton_30.setIcon(QIcon(QPixmap(f"PNG/{stock[self.index]}.png")))
         self.index += 1
