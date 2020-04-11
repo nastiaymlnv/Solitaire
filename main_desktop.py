@@ -12,10 +12,6 @@ _translate = QtCore.QCoreApplication.translate
 
 class Cards:
 
-    # def __init__(self):
-    #     super(Desk, self).__init__()
-    #     self.index = index
-
     def value(self, pushButton, num):
         if pushButton.isEnabled():
             if "A" in pushButton.value:
@@ -68,7 +64,7 @@ class Cards:
                 if names[0] == ui.pushButton_30:
                     temp = stock.index(names[0].text())
                     del stock[stock.index(names[0].text())]
-                    ui.pushButton_30.value(stock[temp])
+                    ui.pushButton_30.setText(_translate("MainWindow", stock[temp]))
                     ui.pushButton_30.setIcon(QIcon(QPixmap(f"PNG/{stock[temp]}.png")))
                     num.clear()
                     names.clear()
@@ -86,7 +82,7 @@ class Cards:
                 if names[0] == ui.pushButton_30:
                     temp1 = stock.index(names[0].text())
                     del stock[stock.index(names[0].text())]
-                    ui.pushButton_30.value(stock[temp1])
+                    ui.pushButton_30.setText(_translate("MainWindow", stock[temp1]))
                     ui.pushButton_30.setIcon(QIcon(QPixmap(f"PNG/{stock[temp1]}.png")))
                     names[1].hide()
                     num.clear()
@@ -96,7 +92,7 @@ class Cards:
                 elif names[1] == ui.pushButton_30:
                     temp2 = stock.index(names[1].text())
                     del stock[stock.index(names[1].text())]
-                    ui.pushButton_30.value(stock[temp2])
+                    ui.pushButton_30.setText(_translate("MainWindow", stock[temp2]))
                     ui.pushButton_30.setIcon(QIcon(QPixmap(f"PNG/{stock[temp2]}.png")))
                     names[0].hide()
                     num.clear()
@@ -131,7 +127,6 @@ class Cards:
                 pyramid[i].setIcon(QIcon(QPixmap(f"PNG/{cards[i]}.png")))
 
 
-
 class Desk(Cards):
 
     def __init__(self, index=0):
@@ -141,9 +136,12 @@ class Desk(Cards):
         d.stock_style()
         if self.index == len(stock):
             self.index = 0
+        ui.pushButton_30.value = stock[self.index]
         ui.pushButton_30.setText(_translate("MainWindow", stock[self.index]))
+        ui.pushButton_30.setStyleSheet("QPushButton{border-radius:10px;"
+                                       "font: 10px;"
+                                       "padding: 10px}")
         ui.pushButton_30.setIcon(QIcon(QPixmap(f"PNG/{stock[self.index]}.png")))
-        # ui.pushButton_30.value(stock[self.index])
         self.index += 1
         score()
 
@@ -176,6 +174,8 @@ def window_style():
     palette.setBrush(QPalette.Window, QBrush(scaled))
     ui.setPalette(palette)
     ui.setWindowIcon(QtGui.QIcon(os.path.join('PNG/playing-cards-icon.png')))
+    ui.label.setStyleSheet("QLabel{color: white;"
+                           "font: bold}")
 
 
 def new_game():
@@ -192,6 +192,7 @@ def new_game():
     d.not_enabled_pyramid()
     d.iter_stock()
     ui.lcdNumber.display(0)
+
 
 def main():
     ui.pushButton_29.clicked.connect(d.iter_stock)
@@ -243,7 +244,6 @@ if __name__ == "__main__":
     fileMenu = menubar.addMenu('Menu')
     fileMenu.addAction(exitActionN)
     fileMenu.addAction(exitActionE)
-
     cards = ["AH", "KH", "QH", "JH", "10H", "9H", "8H", "7H", "6H", "5H", "4H", "3H", "2H",
              "AD", "KD", "QD", "JD", "10D", "9D", "8D", "7D", "6D", "5D", "4D", "3D", "2D",
              "AC", "KC", "QC", "JC", "10C", "9C", "8C", "7C", "6C", "5C", "4C", "3C", "2C",
