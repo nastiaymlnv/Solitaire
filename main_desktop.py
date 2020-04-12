@@ -64,6 +64,8 @@ class Cards:
                 if names[0] == ui.pushButton_30:
                     temp = stock.index(names[0].text())
                     del stock[stock.index(names[0].text())]
+                    if temp >= len(stock):
+                        temp = 0
                     ui.pushButton_30.setText(_translate("MainWindow", stock[temp]))
                     ui.pushButton_30.value = stock[temp]
                     ui.pushButton_30.setIcon(QIcon(QPixmap(f"PNG/{stock[temp]}.png")))
@@ -85,11 +87,9 @@ class Cards:
                 if names[0] == ui.pushButton_30:
                     temp1 = stock.index(names[0].text())
                     del stock[stock.index(names[0].text())]
-                    if temp1 == len(stock):
+                    if temp1 >= len(stock):
                         temp1 = 0
-                        ui.pushButton_30.setText(_translate("MainWindow", stock[temp1]))
-                    else:
-                        ui.pushButton_30.setText(_translate("MainWindow", stock[temp1]))
+                    ui.pushButton_30.setText(_translate("MainWindow", stock[temp1]))
                     ui.pushButton_30.value = stock[temp1]
                     ui.pushButton_30.setIcon(QIcon(QPixmap(f"PNG/{stock[temp1]}.png")))
                     names[1].hide()
@@ -102,11 +102,9 @@ class Cards:
                 elif names[1] == ui.pushButton_30:
                     temp2 = stock.index(names[1].text())
                     del stock[stock.index(names[1].text())]
-                    if temp2 == len(stock):
+                    if temp2 >= len(stock):
                         temp2 = 0
-                        ui.pushButton_30.setText(_translate("MainWindow", stock[temp2]))
-                    else:
-                        ui.pushButton_30.setText(_translate("MainWindow", stock[temp2]))
+                    ui.pushButton_30.setText(_translate("MainWindow", stock[temp2]))
                     ui.pushButton_30.value = stock[temp2]
                     ui.pushButton_30.setIcon(QIcon(QPixmap(f"PNG/{stock[temp2]}.png")))
                     names[0].hide()
@@ -153,13 +151,10 @@ class Desk(Cards):
 
     def iter_stock(self):
         d.stock_style()
-        if self.index == len(stock):
+        if self.index >= len(stock):
             self.index = 0
-            ui.pushButton_30.value = stock[self.index]
-            ui.pushButton_30.setText(_translate("MainWindow", stock[self.index]))
-        else:
-            ui.pushButton_30.value = stock[self.index]
-            ui.pushButton_30.setText(_translate("MainWindow", stock[self.index]))
+        ui.pushButton_30.setText(_translate("MainWindow", stock[self.index]))
+        ui.pushButton_30.value = stock[self.index]
         ui.pushButton_30.setStyleSheet("QPushButton{border-radius:10px;"
                                        "font: 1px;"
                                        "padding: 10px}")
@@ -225,6 +220,7 @@ def winner():
 
 
 def new_game():
+    global stock, num, names
     ui.label_2.setHidden(True)
     ui.label_3.setHidden(True)
     ui.label.setHidden(False)
@@ -244,6 +240,7 @@ def new_game():
     d.not_enabled_pyramid()
     d.iter_stock()
     ui.lcdNumber.display(0)
+    return stock, num, names
 
 
 def main():
