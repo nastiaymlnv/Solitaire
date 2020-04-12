@@ -75,6 +75,8 @@ class Cards:
                     num.clear()
                     names.clear()
                     score()
+                    if ui.pushButton_1.isHidden():
+                        winner()
                     Desk.all_cards_access(Desk, pyramid)
             elif len(names) == 2:
                 # if names[0] == ui.pushButton_30 and names[1] == ui.pushButton_30:
@@ -83,24 +85,36 @@ class Cards:
                 if names[0] == ui.pushButton_30:
                     temp1 = stock.index(names[0].text())
                     del stock[stock.index(names[0].text())]
-                    ui.pushButton_30.setText(_translate("MainWindow", stock[temp1]))
+                    if temp1 == len(stock):
+                        temp1 = 0
+                        ui.pushButton_30.setText(_translate("MainWindow", stock[temp1]))
+                    else:
+                        ui.pushButton_30.setText(_translate("MainWindow", stock[temp1]))
                     ui.pushButton_30.value = stock[temp1]
                     ui.pushButton_30.setIcon(QIcon(QPixmap(f"PNG/{stock[temp1]}.png")))
                     names[1].hide()
                     num.clear()
                     names.clear()
                     score()
+                    if ui.pushButton_1.isHidden():
+                        winner()
                     Desk.all_cards_access(Desk, pyramid)
                 elif names[1] == ui.pushButton_30:
                     temp2 = stock.index(names[1].text())
                     del stock[stock.index(names[1].text())]
-                    ui.pushButton_30.setText(_translate("MainWindow", stock[temp2]))
+                    if temp2 == len(stock):
+                        temp2 = 0
+                        ui.pushButton_30.setText(_translate("MainWindow", stock[temp2]))
+                    else:
+                        ui.pushButton_30.setText(_translate("MainWindow", stock[temp2]))
                     ui.pushButton_30.value = stock[temp2]
                     ui.pushButton_30.setIcon(QIcon(QPixmap(f"PNG/{stock[temp2]}.png")))
                     names[0].hide()
                     num.clear()
                     names.clear()
                     score()
+                    if ui.pushButton_1.isHidden():
+                        winner()
                     Desk.all_cards_access(Desk, pyramid)
                 else:
                     names[0].hide()
@@ -108,6 +122,8 @@ class Cards:
                     num.clear()
                     names.clear()
                     score()
+                    if ui.pushButton_1.isHidden():
+                        winner()
                     Desk.all_cards_access(Desk, pyramid)
 
     def all_cards_access(self, pyramid):
@@ -139,8 +155,11 @@ class Desk(Cards):
         d.stock_style()
         if self.index == len(stock):
             self.index = 0
-        ui.pushButton_30.value = stock[self.index]
-        ui.pushButton_30.setText(_translate("MainWindow", stock[self.index]))
+            ui.pushButton_30.value = stock[self.index]
+            ui.pushButton_30.setText(_translate("MainWindow", stock[self.index]))
+        else:
+            ui.pushButton_30.value = stock[self.index]
+            ui.pushButton_30.setText(_translate("MainWindow", stock[self.index]))
         ui.pushButton_30.setStyleSheet("QPushButton{border-radius:10px;"
                                        "font: 1px;"
                                        "padding: 10px}")
@@ -181,7 +200,37 @@ def window_style():
                            "font: bold}")
 
 
+def winner():
+    ui.label.setHidden(True)
+    ui.pushButton_29.setHidden(True)
+    ui.pushButton_30.setHidden(True)
+    ui.lcdNumber.setHidden(True)
+    ui.label_2.setHidden(False)
+    ui.label_3.setHidden(False)
+    ui.label_2.setText(f"CONGRATULATION!\n\nYou won this game.\nYour score is {ui.lcdNumber.intValue()}\n\n"
+                       f"If you want to start new game,\n press Ctrl+N")
+    ui.label_2.setStyleSheet("QLabel { border-radius:10px;"
+                             "background-color: black;"
+                             "border-style: outset;"
+                             "border-width: 2px;"
+                             "border-color: red;"
+                             "font: bold 22px;"
+                             "color: red;"
+                             "text-align:center;"
+                             "}")
+    movie = QMovie("PNG/giphy.gif")
+    movie.setScaledSize(QtCore.QSize(ui.width(), ui.height()))
+    ui.label_3.setMovie(movie)
+    movie.start()
+
+
 def new_game():
+    ui.label_2.setHidden(True)
+    ui.label_3.setHidden(True)
+    ui.label.setHidden(False)
+    ui.pushButton_29.setHidden(False)
+    ui.pushButton_30.setHidden(False)
+    ui.lcdNumber.setHidden(False)
     shuffle(cards)
     stock = cards[28:]
     num = []
@@ -198,6 +247,8 @@ def new_game():
 
 
 def main():
+    ui.label_2.setHidden(True)
+    ui.label_3.setHidden(True)
     ui.pushButton_29.clicked.connect(d.iter_stock)
     ui.pushButton_1.clicked.connect(partial(Desk.value, Desk, ui.pushButton_1, num))
     ui.pushButton_2.clicked.connect(partial(Desk.value, Desk, ui.pushButton_2, num))
