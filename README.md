@@ -20,5 +20,5 @@ Once the Stock is exhausted and/or no more pairs can be made, the game ends.
 To score, count the number of remaining face up cards in the pyramid. 
 A perfect score is therefore zero, where all cards have been matched into the Foundation.
 
-Mark:
+MARK:/n
 In the console game you must to enter the position of card (1-28), NOT the card suit.
