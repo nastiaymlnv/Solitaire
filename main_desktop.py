@@ -11,6 +11,7 @@ _translate = QtCore.QCoreApplication.translate
 
 
 class Cards:
+    """ Checking the card value, summa and card avaliability on the desk. """
 
     def value(self, pushButton, num):
         if pushButton.isEnabled():
@@ -124,7 +125,7 @@ class Cards:
                         winner()
                     Desk.all_cards_access(Desk, pyramid)
 
-    def all_cards_access(self, pyramid):
+    def all_cards_access(self, pyramid):  #card availability check
         row = 1
         for i in range(len(pyramid[:21])):
             if i == 1:
@@ -145,11 +146,12 @@ class Cards:
 
 
 class Desk(Cards):
+    """ Working with stock, stock style and enabled cards on the desk. """
 
     def __init__(self, index=0):
         self.index = index
 
-    def iter_stock(self):
+    def iter_stock(self):  #doing actions when clicking on the closed card in the stock
         d.stock_style()
         if self.index >= len(stock):
             self.index = 0
@@ -162,7 +164,7 @@ class Desk(Cards):
         self.index += 1
         score()
 
-    def stock_style(self):
+    def stock_style(self):  #setting the style of 2 stock cards (closed card and opened card)
         ui.pushButton_29.setText(_translate("MainWindow", None))
         ui.pushButton_29.setIcon(QIcon(QPixmap("PNG/red_back.png")))
         ui.pushButton_30.setText(_translate("MainWindow", None))
@@ -170,7 +172,7 @@ class Desk(Cards):
         ui.pushButton_29.setIconSize(QSize(125, 125))
         ui.pushButton_30.setIconSize(QSize(125, 125))
 
-    def not_enabled_pyramid(self):
+    def not_enabled_pyramid(self):  #setting all cards disabled except 7 row
         for i in range(21):
             pyramid[i].setText(_translate("MainWindow", None))
             pyramid[i].setEnabled(False)
@@ -179,11 +181,13 @@ class Desk(Cards):
 
 
 def score():
-    ui.lcdNumber.display(ui.lcdNumber.value()+1)
+    """Counting the score. """
+    ui.lcdNumber.display(ui.lcdNumber.value() + 1)
     ui.lcdNumber.update()
 
 
 def window_style():
+    """Setting the style of the main window. """
     ui.setWindowTitle("Pyramid Solitaire")
     img = QImage("PNG/green-felt.png")
     palette = QPalette()
@@ -196,6 +200,7 @@ def window_style():
 
 
 def winner():
+    """The method for successful ending of the game."""
     ui.label.setHidden(True)
     ui.pushButton_29.setHidden(True)
     ui.pushButton_30.setHidden(True)
@@ -220,6 +225,7 @@ def winner():
 
 
 def new_game():
+    """The method for restarting the game. """
     global stock, num, names
     ui.label_2.setHidden(True)
     ui.label_3.setHidden(True)
@@ -244,6 +250,7 @@ def new_game():
 
 
 def main():
+    """The method for the card announcement. """
     ui.label_2.setHidden(True)
     ui.label_3.setHidden(True)
     ui.pushButton_29.clicked.connect(d.iter_stock)
@@ -295,6 +302,7 @@ if __name__ == "__main__":
     fileMenu = menubar.addMenu('Menu')
     fileMenu.addAction(exitActionN)
     fileMenu.addAction(exitActionE)
+
     cards = ["AH", "KH", "QH", "JH", "10H", "9H", "8H", "7H", "6H", "5H", "4H", "3H", "2H",
              "AD", "KD", "QD", "JD", "10D", "9D", "8D", "7D", "6D", "5D", "4D", "3D", "2D",
              "AC", "KC", "QC", "JC", "10C", "9C", "8C", "7C", "6C", "5C", "4C", "3C", "2C",
@@ -310,7 +318,7 @@ if __name__ == "__main__":
     stock = cards[28:]
     num = []
     names = []
-    for i in range(28):
+    for i in range(28):  #setting images to cards
         pyramid[i].setText(_translate("MainWindow", None))
         pyramid[i].setIcon(QIcon(QPixmap(f"PNG/{cards[i]}.png")))
         pyramid[i].setIconSize(QSize(125, 125))
