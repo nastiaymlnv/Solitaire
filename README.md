@@ -2,7 +2,7 @@
 
 This repository has two versions of Pyramid Solitaire game: 
 1. A console game (main_console.py)
-2. A desktop game (main_desctop.py + window.ui(made in QtCreator) + folder "PNG" with images)
+2. A desktop game (main_desktop.py + window.ui(made in QtCreator) + folder "PNG" with images)
 
 RULES:
 The object of the game is to remove pairs of cards that add up to the total of
